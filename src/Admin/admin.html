@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="//unpkg.com/layui@2.6.8/dist/css/layui.css">
 
 <body>
+    <div class="bk"></div>
     <div class="all">
         <div class="allTop">
             <div class="image"></div>
@@ -21,16 +22,22 @@
             </div>
         </div>
         <div id="app">
-            <div style="text-align:center">
-                <label>
-                    选项：<input type="text" class="inp1" v-model="option" placeholder="...">
-                </label>
-                <label>
-                    内容：<input type="text" class="inp2" v-model="content" placeholder="请输入内容...">
-                </label>
-                <input type="button" value="+添加" class="button layui-btn layui-btn-normal layui-btn-radius" @click="add()"></input>
-                <input type="submit" value="∨提交" class="button layui-btn layui-btn-normal layui-btn-radius"></input>
-                <input type="button" value="▤表单" class="button layui-btn layui-btn-normal layui-btn-radius"></input>
+            <div class="inputbox">
+                <fieldset style="width: 800px; text-align: center;">
+                    <legend>输入框</legend>
+                    <div>
+                        <label>
+                        选项：<input type="text" class="inp1" v-model="option" placeholder="...">
+                    </label>
+                        <label>
+                        内容：<input type="text" class="inp2" v-model="content" placeholder="请输入内容...">
+                    </label>
+                        <input type="button" value="+添加" class="button layui-btn layui-btn-normal layui-btn-radius" @click="add()"></input>
+                        <input type="submit" value="∨提交" class="button layui-btn layui-btn-normal layui-btn-radius" @click="toSubmit()"></input>
+                        <input type="button" value="▤表单" class="button layui-btn layui-btn-normal layui-btn-radius"></input>
+                    </div>
+                    <br/>
+                </fieldset>
             </div>
             <br />
             <table>
@@ -48,7 +55,7 @@
                         <td>
                             <a href=" " @click.prevent="del(item.option)">
                                 <button type="button" class="layui-btn layui-btn-danger layui-btn-radius">
-                                    ×删除
+                                    删除
                                 </button>
                             </a>
                         </td>
@@ -83,9 +90,17 @@
                         }
                     })
                     this.list.splice(index, 1)
+                },
+                toSubmit() {
+                    var l = this.list.length
+                    alert("提交成功")
+                    for (let i = 1; i <= l; i++) {
+                        this.list.pop()
+                        console.log("i=" + i)
+                        console.log("length=" + this.list.length)
+                    }
                 }
             }
-
         });
     </script>
 </body>

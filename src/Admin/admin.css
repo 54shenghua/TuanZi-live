@@ -1,7 +1,19 @@
 * {
     margin: 0;
     padding: 0;
-    background-color: aliceblue;
+    /* background-color: rgb(233, 245, 255); */
+}
+
+.bk {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-image: url("image.JPG");
+    background-repeat: no-repeat;
+    background-position: 50% 10%;
+    opacity: 20%;
+    z-index: -1;
+    /*将图片放在最底层*/
 }
 
 .all {
@@ -73,7 +85,7 @@ div {
 
 table {
     border-collapse: collapse;
-    width: 80%;
+    width: 40%;
     margin-right: auto;
     margin-left: auto;
     box-shadow: 5px 5px 5px #000;
@@ -86,6 +98,7 @@ td {
     height: 50px;
     text-align: center;
     border-width: 4px;
+    font-size: large;
 }
 
 .table-head {
@@ -95,4 +108,11 @@ td {
 
 .bkgd {
     background-color: #1c232f;
+}
+
+.inputbox {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
