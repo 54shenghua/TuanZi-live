@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>团子直播admin</title>
+    <link rel="stylesheet" href="admin.css">
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div class="all">
+        <div class="allTop">
+            <div class="image"></div>
+            <div class="header"><h1 style ="background-color: #1c232f;">小团子直播ui</h1></div>
+        </div>
+        <div id="app" >
+            <div style="text-align:center">
+                <label>
+                    选项：<input type="text" class="inp1" v-model="option">
+                </label>
+                <label>
+                    内容：<input type="text" class="inp2" v-model="content">
+                </label>
+                <input type="button" value="添加" class="button" @click="add()"></input>
+                <input type="submit" value="提交" class="button" ></input>
+                <input type="button" value="表单" class="button" ></input>
+            </div>
+            <table>
+                <thead>
+                    <tr class="table-head">
+                        <th style="width: 10%;">选项</th>
+                        <th>内容</th>
+                        <th style="width:10%;">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in list" :key="item.option">
+                        <td>{{item.option}}</td>
+                        <td>{{item.content}}</td>
+                        <td><a href=" " @click.prevent="del(item.option)">删除</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data:{
+                option:'',
+                content:'',
+                list:[
+                    {option:'',content:''}
+                ]
+            },
+            methods:{
+                add(){
+                    var car={option:this.option,content:this.content}
+                    this.list.push(car)
+                },
+                del(option){
+                    var index= this.list.findIndex(item =>{
+                        if(item.option==option){
+                            return true;
+                        }
+                    })
+                    this.list.splice(index,1)
+                }
+            }
+
+        });
+    </script>
+</body>
+</html>
