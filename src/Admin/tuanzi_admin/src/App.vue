@@ -5,7 +5,7 @@ export default {
       table: [{ option: "", label: "" }],
       title: "",
       time: "60",
-      option_list: [],
+      ifOn: false,
     };
   },
   computed: {},
@@ -14,30 +14,52 @@ export default {
     addInput() {
       this.table.push({ option: "", label: "" });
     },
-    // 查看
-    search() {
-      console.log(this.table);
-      console.log(this.title);
-      console.log(this.time);
-    },
+
     submit() {
+      this.ifOn = true;
       axios({
-        method: "get",
-        url: "",
+        method: "post",
+        url: "http://127.0.0.1/test",
         data: {
           title: this.title,
           table: this.table,
         },
-      });
+      })
+        .then(function (response) {
+          alert("发布成功！" + response);
+        })
+        .catch(function (error) {
+          alert("发布失败！" + error);
+        });
     },
-    reset() {},
+
+    stop() {
+      this.ifOn = false;
+      axios({
+        method: "post",
+        url: "http://127.0.0.1/test",
+        data: {
+          ifOn: this.ifOn,
+        },
+      })
+        .then(function (response) {
+          alert("终止成功！" + response);
+        })
+        .catch(function (error) {
+          alert("终止失败！" + error);
+        });
+    },
+
+    reset() {
+      this.table = [{ option: "", label: "" }];
+    },
   },
 };
 </script>
 
 <template>
   <div class="main">
-    本轮投票：<input v-model="this.title" /> <br />
+    本轮投票题目：<input v-model="this.title" /> <br />
     设定时间：(单位：秒) <input v-model="this.time" type="number" />
     <div v-for="item in table" :key="item.option">
       选项：
@@ -52,9 +74,9 @@ export default {
       标签：<input v-model="item.label" />
     </div>
     <button @click="addInput">添加选项</button>
-    <button @click="search">查看选项</button>
-    <button @click="reset">更新表单</button>
-    <button @click="submit">提交</button>
+    <button @click="reset">重置表单</button>
+    <button @click="submit">发布提交</button>
+    <button @click="stop">终止投票</button>
   </div>
 
   <br />
@@ -65,7 +87,7 @@ export default {
   </div>
   <div>
     <br />
-    题目 为：{{ title }} <br />
-    设定时间 为： {{ time }} 秒<br />
+    投票题目 为：{{ title }} <br />
+    设定时间 为：{{ time }} 秒<br />
   </div>
 </template>
