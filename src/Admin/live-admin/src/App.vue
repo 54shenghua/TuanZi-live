@@ -16,9 +16,6 @@ export default {
     addInput() {
       this.table.push({ option: "", label: "" });
     },
-    change(e){
-    this.$forceUpdate(e)
-    },
     submit() {
       this.ifOn = true;
       axios({
@@ -39,7 +36,7 @@ export default {
     },
     stop() {
       this.ifOn = false;
-      this.axios({
+      axios({
         method: "post",
         url: "http://127.0.0.1/test",
         data: {
@@ -63,7 +60,7 @@ export default {
 <template>
   <div >
     <div class="main">
-    本轮投票题目：<el-input v-model="title" @input="change($event)" placeholder="请输入内容"></el-input> <br />
+    本轮投票题目：<el-input v-model="title"  placeholder="请输入内容"></el-input> <br />
     设定时间：(单位：秒) <el-input v-model="time" type="number"></el-input>
     <div v-for="item in table" :key="item.option">
       <br/>
