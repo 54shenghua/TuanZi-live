@@ -1,6 +1,6 @@
 
 <script>
-
+import axios  from 'axios';
 export default {
   data() {
     return {
@@ -21,12 +21,13 @@ export default {
     },
     submit() {
       this.ifOn = true;
-      this.axios({
+      axios({
         method: "post",
         url: "http://127.0.0.1/test",
         data: {
           title: this.title,
           table: this.table,
+          time: this.time,
         },
       })
         .then(function (response) {
