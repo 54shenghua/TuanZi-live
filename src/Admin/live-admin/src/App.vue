@@ -20,9 +20,8 @@ export default {
       this.ifOn = true;
       axios({
         method: "post",
-        url: "http://127.0.0.1/test",
+        url: "/inPutOptions",
         data: {
-          title: this.title,
           table: this.table,
           time: this.time,
         },
