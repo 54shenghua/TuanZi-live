@@ -1,4 +1,6 @@
+
 <script>
+
 export default {
   data() {
     return {
@@ -14,9 +16,12 @@ export default {
     addInput() {
       this.table.push({ option: "", label: "" });
     },
+    change(e){
+    this.$forceUpdate(e)
+    },
     submit() {
       this.ifOn = true;
-      axios({
+      this.axios({
         method: "post",
         url: "http://127.0.0.1/test",
         data: {
@@ -33,7 +38,7 @@ export default {
     },
     stop() {
       this.ifOn = false;
-      axios({
+      this.axios({
         method: "post",
         url: "http://127.0.0.1/test",
         data: {
@@ -55,10 +60,12 @@ export default {
 </script>
 
 <template>
-  <div class="main">
-    本轮投票题目：<input v-model="this.title" /> <br />
-    设定时间：(单位：秒) <input v-model="this.time" type="number" />
+  <div >
+    <div class="main">
+    本轮投票题目：<el-input v-model="title" @input="change($event)" placeholder="请输入内容"></el-input> <br />
+    设定时间：(单位：秒) <el-input v-model="time" type="number"></el-input>
     <div v-for="item in table" :key="item.option">
+      <br/>
       选项：
       <el-select v-model="item.option">
         <el-option value="A">A</el-option>
@@ -68,13 +75,14 @@ export default {
         <el-option value="E">E</el-option>
       </el-select>
       <br />
-      标签：<input v-model="item.label" />
+      标签：<el-input v-model="item.label" />
     </div>
-    <el-button @click="addInput">添加选项</el-button>
-    <el-button @click="reset">重置表单</el-button>
-    <el-button @click="submit">发布提交</el-button>
-    <el-button @click="stop">终止投票</el-button>
-  </div>
+    <br>
+    <el-button type="primary" @click="addInput">添加选项</el-button>
+    <el-button type="primary" @click="reset">重置表单</el-button>
+    <el-button type="primary" @click="submit">发布提交</el-button>
+    <el-button type="primary" @click="stop">终止投票</el-button>
+    </div>
 
   <br />
   <div v-for="i in table" :key="i.id">
@@ -86,5 +94,6 @@ export default {
     <br />
     投票题目 为：{{ title }} <br />
     设定时间 为：{{ time }} 秒<br />
+  </div>
   </div>
 </template>
