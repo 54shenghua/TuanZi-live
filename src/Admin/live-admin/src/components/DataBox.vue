@@ -116,14 +116,13 @@ export default {
     },
     preset() {
       Preset(this.value).then((res) => {
-        console.log('预选成功')
+        console.log('成功预选')
       })
     }
   },
   props: {}
 }
 </script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .data {
