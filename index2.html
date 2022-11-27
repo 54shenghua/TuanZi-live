@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+    <script>
+        var Value;
+    function Data(){
+        axios.get('http://127.0.0.1:8000/pc')
+        .then(function (response) {
+        var dic1 = response.data.Data;
+        var Datavalues = Object.values(dic1);
+        
+    })
+    }
+    function Option(){
+        axios.get('http://127.0.0.1:8000/getOptions')
+        .then(function (response) {
+        var dic2 = response.data.options;
+        var Optionvalues = Object.values(dic2);
+        
+    })
+    }
+    var Datavalues = [23,12,5,6]
+
+
+    Option()
+    setInterval(function(){
+    //     Data();
+        var sum=0;
+        for(let i=0;i<4;i++)
+        {
+            sum += Datavalues[i];
+        }
+    var percent = new Array(4)
+    for(let j=0;j<4;j++)
+    {
+        percent[i] = sum*100 / Datavalues[i]
+    }
+
+    // console.log(sum)
+    },1000);
+
+    
+    
+    </script>
+    <style>
+        
+    
+    #chart{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        min-height: 100%;
+        height: auto;
+        z-index: 0;
+        background-color: aliceblue;
+		
+		
+       }
+
+    img{
+        position: absolute;
+		
+		height: 80%;
+        margin-top: 6.2%;
+        margin-left: 20%;
+        opacity: 0.2;
+        z-index: 1;
+	}
+
+    #OPTION{
+        position: absolute;
+        height: 100%;
+        width: 100%;
+       
+       
+    }
+    #OPTION li{
+        list-style: none;
+        margin-top: 3%;
+        margin-left: 5%;
+        height: 17.5%;
+        position: relative;
+        width: 90%;
+		background-image: url("background.jpg");
+        background-repeat: no-repeat;
+        border-style: solid;
+        border-width: 3px;
+        border-radius: 10px;
+
+        display: flex;
+    }
+    #Avalue{
+        block-size:  100%;
+    }
+    #Bvalue{
+        block-size:  100%;
+    }
+    #Cvalue{
+        block-size:  100%;
+    }
+    #Dvalue{
+        block-size:  100%;
+    }
+    .font{
+        display: inline-flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 150%;
+        border-radius: 10px;
+        
+        width: 100%;
+    }
+    .value{
+    
+        display: inline-flex;
+        justify-content: flex-end;
+        align-items: center;
+        
+    }
+    
+    
+    </style>
+</head>
+<body">
+    
+     
+        <div style="width: 100%;height: 100%;" id = 'chart'>
+            
+        </div>
+        <img src="https://pic.imgdb.cn/item/63747f3b16f2c2beb1c983f7.png" id="tuanzi">
+        <div id="OPTION">
+            <li><span class="font"  id="OPTIONA"></span><span class="value" id="Avalue"></span></li>
+            <li><span class="font"  id="OPTIONB"></span><span class="value" id="Bvalue"></span></li>
+            <li><span class="font"  id="OPTIONC"></span><span class="value" id="Cvalue"></span></li>
+            <li><span class="font"  id="OPTIOND"></span><span class="value" id="Dvalue"></span></li>
+        </div>
+        <script>
+            
+            var Optionvalues = ['A:向前','B:向后','C:向左','D:向右']
+            
+            //Datavalues 一个选项数据的数组 
+            //Optionvalues 一个选项内容的数组
+            document.getElementById("OPTIONA").innerHTML = Optionvalues[0]
+            document.getElementById("OPTIONB").innerHTML = Optionvalues[1]
+            document.getElementById("OPTIONC").innerHTML = Optionvalues[2]
+            document.getElementById("OPTIOND").innerHTML = Optionvalues[3]
+            document.getElementById("Avalue").innerHTML = Datavalues[0]
+            document.getElementById("Bvalue").innerHTML = Datavalues[1]
+            document.getElementById("Cvalue").innerHTML = Datavalues[2]
+            document.getElementById("Dvalue").innerHTML = Datavalues[3]
+        </script>
+</body>
+</html>
