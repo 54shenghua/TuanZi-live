@@ -6,7 +6,7 @@
           <div class="grid-content bg-purple">
             <h2 class="title">控制面板</h2>
             <div class="time">
-              <el-input placeholder="时间" v-model="problemtime">
+              <el-input placeholder="时间" v-model="problemtime" type="number">
                 <template slot="prepend">时间 ：</template>
               </el-input>
             </div>
@@ -26,15 +26,16 @@
             </div>
             <div>
               <el-button type="primary" @click="submit" round>发布提交</el-button>
-              <el-button type="primary" @click="reset" round>重置表单</el-button>
               <el-button type="primary" @click="stop" round>终止投票</el-button>
+              <el-button type="primary" @click="delet" round>展示页面清零</el-button>
+              <el-button type="primary" @click="reset" round>重置表单</el-button>
             </div>
           </div>
         </el-col>
         <el-col :span="6">
           <div class="grid-content bg-purple-light">
             <h4 class="title"> 预设选择</h4>
-            <el-select v-model="value" placeholder="请选择">
+            <el-select v-model="value" placeholder="请选择" @change="preset">
               <el-option v-for="item in opts" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
@@ -46,7 +47,7 @@
 </template>
 
 <script>
-import { Stop, Submit } from '../request/api'
+import { Start, Stop, Submit, Reset, Preset } from '../request/api'
 export default {
   name: 'DataBox',
   data() {
@@ -57,28 +58,28 @@ export default {
 
       },
       opts: [{
-        value: '选项1',
+        value: '1',
         label: '预设一'
       }, {
-        value: '选项2',
+        value: '2',
         label: '预设二'
       }, {
-        value: '选项3',
+        value: '3',
         label: '预设三'
       }, {
-        value: '选项4',
+        value: '4',
         label: '预设四'
       }, {
-        value: '选项5',
+        value: '5',
         label: '预设五'
       }, {
-        value: '选项6',
+        value: '6',
         label: '预设六'
       }, {
-        value: '选项7',
+        value: '7',
         label: '预设七'
       }, {
-        value: '选项8',
+        value: '8',
         label: '预设八'
       }],
       value: ''
@@ -89,20 +90,39 @@ export default {
       if (Object.keys(this.options).length === 0) { this.$set(this.options, 'A', '') } else if (Object.keys(this.options).length === 1) { this.$set(this.options, 'B', '') } else if (Object.keys(this.options).length === 2) { this.$set(this.options, 'C', '') } else if (Object.keys(this.options).length === 3) { this.$set(this.options, 'D', '') } else if (Object.keys(this.options).length === 4) { this.$set(this.options, 'E', '') }
     },
     submit() {
-      submit()
+
+      if (this.problemContent === '' || this.options['A'] === '' || this.options['B'] === '' || this.options['B'] === undefined) {
+        alert('没有信息')
+      }
+      else {
+        Submit(this.problemtime, this.problemContent, this.options).then((res) => {
+          console.log(res.data)
+          Start().then((res) => {
+            console.log('开始成功')
+          })
+        })
+      }
     },
     stop() {
-      stop()
+      Stop()
     },
     reset() {
-
+      this.options = { A: '' }
+      this.problemContent = ''
+      this.problemtime = '60'
+    },
+    delet() {
+      Reset()
+    },
+    preset() {
+      Preset(this.value).then((res) => {
+        console.log('成功预选')
+      })
     }
   },
-  props: {
-  }
+  props: {}
 }
 </script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .data {
