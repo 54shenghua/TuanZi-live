@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Vue Example</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    html,
+    body,
+    #app {
+      width: 100%;
+      height: 100%;
+    }
+
+    #app {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+
+    .progress-bar {
+      height: 21%;
+    }
+
+    .progress-bar-background {
+      height: 100%;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background-color: rgba(92, 92, 191, 0.827);
+    }
+
+    .progress-bar-label {
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="progress-bar" v-for="(option, index) in options" :key="index">
+      <div class="progress-bar-background">
+        <div class="progress-bar-fill" :style="{ width: getOptionPercentage(option) + '%' }">
+          <div class="progress-bar-label">{{ option.label }}: {{ option.count }} votes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        options: [
+          { label: 'Option 1', count: 10 },
+          { label: 'Option 2', count: 6 },
+          { label: 'Option 3', count: 1 },
+          { label: 'Option 4', count: 2 },
+        ],
+        totalCount: 0
+      },
+      methods: {
+        // 计算选项的百分比
+        getData() {
+          axios.get('')
+            .then(function (response) {
+              this.options = response.data.Data;
+            })
+            .catch(function (error) {
+              console.log(error);
+            })
+        },
+        getOptionPercentage(option) {
+          all = 0
+          for (i = 0; i < this.options.length; i++) {
+            all += this.options[i].count
+          }
+          this.totalCount = all
+          return Math.round((option.count / this.totalCount) * 100);
+        },
+      },
+      created() {
+        setInterval(() => {
+          this.getData();
+        }, 500);
+      }
+    });
+  </script>
+</body>
+
+</html>
