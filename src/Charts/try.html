@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Vue Example</title>
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="./ref/vue.js"></script>
+  <script src="./ref/axios.min.js"></script>
   <style>
     html,
     body,
@@ -74,7 +74,7 @@
         getData() {
           axios.get('http://127.0.0.1:8000/pc')
             .then(response=> {
-              this.options = response.data.Data;
+              this.options = response.data.data;
             })
             .catch(function (error) {
               console.log(error);

@@ -26,7 +26,7 @@ class PresetIndex(BaseModel):
        
 
 #定义全局所要用的变量
-danmu=Danmu(14650198)
+danmu=Danmu(8345602)
 ifStop=True
 data = list()
 options = dict()
@@ -130,7 +130,7 @@ async def PC():
         if(ifStop):#在暂停时传回暂停时所储存的数据
                return {
                       "status":True,
-                      "Data":data
+                      "data":data
                }
         if (time.time() - preTime)>runningTime:
                ifStop = True
