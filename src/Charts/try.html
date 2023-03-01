@@ -26,6 +26,7 @@
 
     .progress-bar-background {
       height: 100%;
+      width: 80%;
     }
 
     .progress-bar-fill {
@@ -35,6 +36,12 @@
 
     .progress-bar-label {
       height: 100%;
+      display: inline;
+      float: left;
+    }
+    .progress-bar-count{
+      float: right;
+      display: inline;
     }
   </style>
 </head>
@@ -43,29 +50,30 @@
   <div id="app">
     <div class="progress-bar" v-for="(option, index) in options" :key="index">
       <div class="progress-bar-background">
-        <div class="progress-bar-fill" :style="{ width: getOptionPercentage(option) + '%' }">
-          <div class="progress-bar-label">{{ option.label }}: {{ option.count }} votes</div>
-        </div>
+        <div class="progress-bar-label">{{ option.label }}</div>
+        <div class="progress-bar-count">{{ option.count }}</div>
+        <div class="progress-bar-fill" :style="{ width: getOptionPercentage(option) + '%' }"></div>
       </div>
     </div>
   </div>
   <script>
     new Vue({
       el: '#app',
-      data: {
+      data(){
+        return{
         options: [
-          { label: 'Option 1', count: 10 },
-          { label: 'Option 2', count: 6 },
-          { label: 'Option 3', count: 1 },
-          { label: 'Option 4', count: 2 },
+          { label: '', count: 0 },
+          { label: '', count: 0 },
+          { label: '', count: 0 },
+          { label: '', count: 0 },
         ],
         totalCount: 0
-      },
+      }},
       methods: {
         // 计算选项的百分比
         getData() {
-          axios.get('')
-            .then(function (response) {
+          axios.get('http://127.0.0.1:8000/pc')
+            .then(response=> {
               this.options = response.data.Data;
             })
             .catch(function (error) {
@@ -84,7 +92,7 @@
       created() {
         setInterval(() => {
           this.getData();
-        }, 500);
+        }, 1500);
       }
     });
   </script>

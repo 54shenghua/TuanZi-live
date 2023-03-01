@@ -1,0 +1,69 @@
+{
+  "name": "xy-ui",
+  "version": "1.10.7",
+  "description": "a front end cross-framework ui library based on web-components",
+  "main": "index.js",
+  "module": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XboxYan/xy-ui.git"
+  },
+  "keywords": [
+    "web-components",
+    "ui",
+    "shadow-dom",
+    "keyboard",
+    "custom-elements",
+    "html5",
+    "css3",
+    "javascript",
+    "xy-button",
+    "xy-icon",
+    "xy-slider",
+    "xy-select",
+    "xy-loading",
+    "xy-switch",
+    "xy-checkbox",
+    "xy-radio",
+    "xy-tab",
+    "xy-layout",
+    "xy-tips",
+    "xy-message",
+    "xy-dialog",
+    "xy-input",
+    "xy-img",
+    "xy-rate",
+    "xy-popover",
+    "xy-color-picker",
+    "xy-color-pane",
+    "xy-form",
+    "xy-pagination",
+    "xy-date-picker",
+    "xy-date-pane",
+    "xy-table",
+    "xy-text",
+    "xy-view",
+    "xy-datalist"
+  ],
+  "author": "XboxYan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/XboxYan/xy-ui/issues"
+  },
+  "publishConfig": { 
+    "registry1": "https://npm.pkg.github.com/@XboxYan" 
+  },
+  "homepage": "https://github.com/XboxYan/xy-ui#readme",
+  "files": [
+	  "index.js",
+		"components",
+		"iconfont",
+		"utils"
+	]
+}

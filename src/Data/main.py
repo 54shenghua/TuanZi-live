@@ -26,9 +26,9 @@ class PresetIndex(BaseModel):
        
 
 #定义全局所要用的变量
-danmu=Danmu(27032496)
+danmu=Danmu(14650198)
 ifStop=True
-data = dict()
+data = list()
 options = dict()
 runningTime = int()
 preTime = float()
@@ -38,7 +38,7 @@ preSets = csv.reader(preSteFile)
 preSetList = list(preSets)
 print(preSetList)
 #初始化日志文件
-outcome = open("history.csv","w",encoding="UTF-8") 
+outcome = open("history.csv","w",newline='',encoding="UTF-8") 
 headers=['question','A','B','C','D','E']
 writers = csv.DictWriter(outcome,fieldnames=headers)
 writers.writeheader
@@ -59,9 +59,20 @@ async def Start():
 async def Stop():
         global data
         global ifStop
+        global options
         ifStop = True
-        data = danmu.get_danmu()
-        a = {'question':'asdf','A':data['A'],'B':data['B'],'C':data['C'],'D':data['D'],'E':data['E']}
+        recent_data = danmu.get_danmu()
+        n=0
+        data.clear()
+        for key in options :
+              if key=="question":
+                     continue
+              _data={}
+              _data["label"]= options[key]
+              _data["count"]= recent_data[chr(n+65)]
+              data.append(_data)
+              n=n+1
+        a = {'question':options["question"],'A':recent_data['A'],'B':recent_data['B'],'C':recent_data['C'],'D':recent_data['D'],'E':recent_data['E']}
         writers.writerow(a)
         return{
               "status":True,
@@ -78,7 +89,7 @@ async def Reset():
         danmu.ans['E']=0
         danmu.Hashmap={}
         global data
-        data= {}
+        data= []
         global options
         options = {}
         global ifStop 
@@ -114,6 +125,8 @@ async def PC():
         global preTime
         global runningTime
         global ifStop
+        global options
+        global data
         if(ifStop):#在暂停时传回暂停时所储存的数据
                return {
                       "status":True,
@@ -121,10 +134,20 @@ async def PC():
                }
         if (time.time() - preTime)>runningTime:
                ifStop = True
-        load=danmu.get_danmu()  
+        recent_data = danmu.get_danmu()
+        n=0
+        data.clear()
+        for key in options :
+              if key=="question":
+                     continue
+              _data={}
+              _data["label"]= options[key]
+              _data["count"]= recent_data[chr(n+65)]
+              data.append(_data)
+              n=n+1
         return {
                       "status":True,
-                      "Data":load
+                      "data":data
                }
 
 ##预设问题选项读取
@@ -139,8 +162,12 @@ async def getPreset(index):
 
        return{
               "status":True,
-              "Data":preSet
+              "data":preSet
        }
-       
+##关闭文件
+@app.get("/exit")
+async def exit():
+       global outcome
+       outcome.close
 if __name__=='__main__':
      uvicorn.run (app) 
