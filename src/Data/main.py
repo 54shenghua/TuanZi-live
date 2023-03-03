@@ -105,6 +105,8 @@ async def InPutOptions(inPutOption:Options):
        runningTime = inPutOption.time
        options["question"] = inPutOption.problemValue
        for pair in inPutOption.options:
+              if pair["label"]=="":
+                     break
               option = pair["option"]
               label =  pair['label']
               options[pair["option"]] = option +"   "+label
