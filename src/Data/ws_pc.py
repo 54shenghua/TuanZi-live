@@ -4,7 +4,7 @@ from aiowebsocket.converses import AioWebSocket
 import json
 
 remote = 'ws://broadcastlv.chat.bilibili.com:2244/sub'
-roomid = input()
+roomid = input("输入房间号：")
 
 data_raw = '000000{headerLen}0010000100000007000000017b22726f6f6d6964223a{roomid}7d'
 data_raw = data_raw.format(headerLen=hex(27 + len(roomid))[2:],
@@ -68,7 +68,7 @@ def printDM(data):
         try:
             jd = json.loads(data[16:].decode('utf-8', errors='ignore'))
             if (jd['cmd'] == 'DANMU_MSG'):
-                print('[DANMU] ', jd['info'][2][1], ': ', jd['info'][1])
+                print('[DANMU] ', jd['info'][2], ': ', jd['info'][1])#jd['info'][1]是弹幕内容   jd['info'][2][0]是uid
             elif (jd['cmd'] == 'SEND_GIFT'):
                 print('[GITT]', jd['data']['uname'], ' ', jd['data']['action'], ' ', jd['data']['num'], 'x',
                       jd['data']['giftName'])
@@ -83,7 +83,8 @@ def printDM(data):
 
 if __name__ == '__main__':
     try:
-        loop = asyncio.get_event_loop()
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
         loop.run_until_complete(startup())
     except Exception as e:
         print('退出')
