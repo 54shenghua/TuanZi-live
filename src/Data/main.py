@@ -26,7 +26,7 @@ class PresetIndex(BaseModel):
        
 
 #定义全局所要用的变量
-danmu=Danmu(8345602)
+danmu=Danmu(7777)
 ifStop=True
 data = list()
 options = dict()
@@ -105,8 +105,6 @@ async def InPutOptions(inPutOption:Options):
        runningTime = inPutOption.time
        options["question"] = inPutOption.problemValue
        for pair in inPutOption.options:
-              if pair["label"]=="":
-                     break
               option = pair["option"]
               label =  pair['label']
               options[pair["option"]] = option +"   "+label

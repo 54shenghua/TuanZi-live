@@ -66,6 +66,7 @@ class Danmu():
             text = ''
             timeline = ''
             msg = ''
+            print(self.ans)
         return self.ans
     #进行选项统计
     def analyze_danmu(self,uid,text,ans):
