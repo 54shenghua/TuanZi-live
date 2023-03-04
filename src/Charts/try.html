@@ -7,21 +7,20 @@
   <script src="./ref/vue.js"></script>
   <script src="./ref/axios.min.js"></script>
   <style>
-    html,
-    body,
+    body,html{
+    height: 100%;
+    width:100%;
+    margin:0 0 0 0;
+    overflow: hidden;}
     #app {
-      width: 100%;
-      height: 100%;
-    }
-
-    #app {
+      height: 90%;
       display: flex;
       flex-direction: column;
       justify-content: space-around;
     }
 
     .progress-bar {
-      height: 21%;
+      height: 19%;
     }
 
     .progress-bar-background {
@@ -30,6 +29,7 @@
     }
 
     .progress-bar-fill {
+      border-radius: 9px;
       height: 100%;
       background-color: rgba(92, 92, 191, 0.827);
     }
@@ -43,10 +43,14 @@
       float: right;
       display: inline;
     }
+    .time{
+      height: 9%;
+    }
   </style>
 </head>
 
 <body>
+  <div id="time">剩余时间为：{{time}}</div>
   <div id="app">
     <div class="progress-bar" v-for="(option, index) in options" :key="index">
       <div class="progress-bar-background">
@@ -58,14 +62,26 @@
   </div>
   <script>
     new Vue({
+      el:'#time',
+      data(){
+        return{
+          time:30
+        }
+      }
+    })
+
+
+
+
+    new Vue({
       el: '#app',
       data(){
         return{
         options: [
-          { label: '', count: 0 },
-          { label: '', count: 0 },
-          { label: '', count: 0 },
-          { label: '', count: 0 },
+          { label: 'A选项', count: 0 },
+          { label: 'B选项', count: 0 },
+          { label: 'C选项', count: 0 },
+          { label: 'D选项', count: 0 },
         ],
         totalCount: 0
       }},
