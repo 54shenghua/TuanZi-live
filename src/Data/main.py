@@ -1,11 +1,12 @@
 from fastapi import FastAPI
-from pc import Danmu
+from New_pc_1 import Spider
 import uvicorn
 from pydantic import BaseModel
 import csv
 import time
 from wsgiref import headers
 from fastapi.middleware.cors import CORSMiddleware
+import asyncio
 
 app = FastAPI()
 app.add_middleware(
@@ -26,7 +27,7 @@ class PresetIndex(BaseModel):
        
 
 #定义全局所要用的变量
-danmu=Danmu(7777)
+danmu=Spider(7734200)
 ifStop=True
 data = list()
 options = dict()
@@ -44,11 +45,28 @@ writers = csv.DictWriter(outcome,fieldnames=headers)
 writers.writeheader
 header = {'question':'question','A':'A','B':'B','C':'C','D':'D','E':'E'}
 writers.writerow(header)
+
+
+#开启爬虫
+@app.get("/startPC")
+async def StartPC():
+       global danmu
+       await danmu.running()
+       return{
+              "status":True,
+       }
 #开始
 @app.post("/start")
 async def Start():
        global ifStop 
        ifStop = False
+       global danmu
+       danmu.ans['A']=0
+       danmu.ans['B']=0
+       danmu.ans['C']=0
+       danmu.ans['D']=0
+       danmu.ans['E']=0
+       danmu.Hashmap={}
        global preTime
        preTime = time.time()
        return{
@@ -61,7 +79,7 @@ async def Stop():
         global ifStop
         global options
         ifStop = True
-        recent_data = danmu.get_danmu()
+        recent_data = danmu.ans
         n=0
         data.clear()
         for key in options :
@@ -115,9 +133,11 @@ async def InPutOptions(inPutOption:Options):
 @app.get("/getOptions")
 async def GetOptions():
        global options
+       global runningTime
        return{
               "status":True,
-              "options":options
+              "options":options,
+              "time":runningTime
        }
 #传回爬虫数据
 @app.get("/pc")
@@ -134,7 +154,7 @@ async def PC():
                }
         if (time.time() - preTime)>runningTime:
                ifStop = True
-        recent_data = danmu.get_danmu()
+        recent_data = danmu.ans
         n=0
         data.clear()
         for key in options :
@@ -170,4 +190,4 @@ async def exit():
        global outcome
        outcome.close
 if __name__=='__main__':
-     uvicorn.run (app) 
+       uvicorn.run (app) 

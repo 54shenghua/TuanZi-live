@@ -3,7 +3,7 @@ import zlib
 from aiowebsocket.converses import AioWebSocket
 import json
 
-class spider():
+class Spider():
     Hashmap = {}
     ans = {
         'A': 0,
@@ -12,6 +12,8 @@ class spider():
         'D': 0,
         'E': 0
     }
+    
+
 
     def __init__(self, room_id):
         self.remote = 'ws://broadcastlv.chat.bilibili.com:2244/sub'
@@ -21,6 +23,7 @@ class spider():
                                              roomid=''.join(map(lambda x: hex(ord(x))[2:], list(self.roomid))))
 
     async def startup(self):
+        
         async with AioWebSocket(self.remote) as aws:
             converse = aws.manipulator
             await converse.send(bytes.fromhex(self.data_raw))
@@ -84,7 +87,7 @@ class spider():
             try:
                 jd = json.loads(data[16:].decode('utf-8', errors='ignore'))
                 if (jd['cmd'] == 'DANMU_MSG'):
-                    print('[DANMU] ', jd['info'][2], ': ', jd['info'][1])  # jd['info'][1]是弹幕内容   jd['info'][2][0]是uid
+                    #print('[DANMU] ', jd['info'][2], ': ', jd['info'][1])  # jd['info'][1]是弹幕内容   jd['info'][2][0]是uid
                     uid = jd['info'][2][0]
                     # 判断这个uid是否已经统计过
                     if uid in self.Hashmap:
@@ -93,11 +96,13 @@ class spider():
                         text = jd['info'][1]
                         self.analyze_danmu(uid, text, self.ans)
                     #打印当前投票情况
+                    
                     print(self.ans)
+                    
                     # 将投票情况写入txt
-                    f = open('log.txt','a+',encoding='utf-8')
-                    f.write(str(self.ans)+'\n')
-                    f.close()
+                    # f = open('log.txt','a+',encoding='utf-8')
+                    # f.write(str(self.ans)+'\n')
+                    # f.close()
                 elif (jd['cmd'] == 'SEND_GIFT'):
                     # print('[GITT]', jd['data']['uname'], ' ', jd['data']['action'], ' ', jd['data']['num'], 'x',
                     # jd['data']['giftName'])
@@ -114,14 +119,16 @@ class spider():
             except Exception as e:
                 pass
 
-    def running(self):
+    async def running(self):
         try:
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
-            loop.run_until_complete(self.startup())
+            loop.run_until_complete(await self.startup())
         except Exception as e:
             print("quite")
+
+        
 if __name__ == '__main__':
     roomId = 10267370
-    danmu = spider(roomId)
+    danmu = Spider(roomId)
     danmu.running()
