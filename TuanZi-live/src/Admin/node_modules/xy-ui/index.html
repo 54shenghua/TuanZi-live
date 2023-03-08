@@ -1,0 +1,661 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>xy-ui</title>
+    <style>
+        xy-button,xy-checkbox,xy-radio,xy-input,xy-textarea,xy-color-picker,xy-select{ margin: 0 10px 15px 0; vertical-align: middle; }
+        xy-input:not([block]),xy-textarea:not([block]){ width:300px; }
+        xy-tips>*{ margin: 0;}
+        xy-popover>*{ margin: 0;}
+        xy-tips,xy-popover{ margin: 0 10px 10px 0; }
+        p{  padding: 5px 10px; border-left: 4px solid olive; color: #666 }
+        .layout{ height: 300px; }
+        .side{ width: 200px; }
+        .main{ margin: 0 10px; }
+        .box{ width: 100px; height: 100px; color: #fff; }
+        .header,.footer{ padding: 5px 10px; color: #fff; }
+        xy-layout{ background: #2196f380; }
+        xy-img{ width: 200px; height: 150px; }
+        xy-form-item *{
+            margin-bottom: 0;
+        }
+        xy-col{
+            background: #2196f380;
+            color:#fff;
+        }
+        :not(:defined) {
+            opacity: 0;
+        }
+        :root{
+            /*--themeBackground:linear-gradient(to bottom, #42b983 0%,#06b2a1 100%)*/
+        }
+        .parent[coord]{
+            display: flex;
+            width: 500px;
+            height: 500px;
+            background: #fff;
+            color: #fff;
+            border: 10px solid #f1f1f1;
+            position: relative;
+        }
+        .child{
+            width: 50px;
+            height: 50px;
+            background: #42b983;
+            transition: 0.1s;
+            transform: translate(100px,100px);
+        }
+        xy-view[draggable]{
+            width: 50px;
+            height: 50px;
+            background: #42b983;
+        }
+        .ball{
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #42b983;
+        }
+        .parent[coord]:hover .ball{
+            transform: translate( calc( var(--x) * 1px - 10px - 25px ) ,calc(var(--y) * 1px - 10px - 25px ))!important;
+        }
+  
+        .child:active{
+            background: #2c9666;
+            pointer-events: none;
+            transition: transform 0s;
+            transform-origin: 0 0;
+            transform: translate( calc( var(--x) * 1px - var(--_x) * 1px - 10px ) ,calc(var(--y) * 1px - var(--_y) * 1px - 10px ))!important;
+        }
+        xy-view[coord] span{
+            margin: auto;
+        }
+        xy-view[coord] span::after{
+            counter-reset: x var(--x) y var(--y);
+            content: counter(x) ',' counter(y);
+        }
+        .dropbox{
+            width: 200px;
+            height: 200px;
+            background: #fff;
+            color: #fff;
+            border: 10px solid #f1f1f1;
+        }
+        .dropbox-parent{
+            width: 500px;
+            height: 500px;
+        }
+        .dropbox[over],.dropbox:focus{
+            border-color: #2c9666;
+        }
+        xy-view[resizable]{
+            width: 200px;
+            height: 200px;
+            background: #f1f1f1;
+        }
+    </style>
+    <!-- <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/webcomponents-bundle.js"></script> -->
+    <!--
+    <script type="module" src="./components/xy-button.js" async></script>
+    <script type="module" src="./components/xy-slider.js" async></script>
+    <script type="module" src="./components/xy-select.js" async></script>
+    <script type="module" src="./components/xy-loading.js" async></script>
+    <script type="module" src="./components/xy-tab.js" async></script>
+    <script type="module" src="./components/xy-switch.js" async></script>
+    <script type="module" src="./components/xy-checkbox.js" async></script>
+    <script type="module" src="./components/xy-radio.js" async></script>
+    <script type="module" src="./components/xy-tips.js" async></script>
+    <script type="module" src="./components/xy-icon.js" async></script>
+    <script type="module" src="./components/xy-layout.js" async></script>
+    <script type="module" src="./components/xy-dialog.js" async></script>
+    -->
+    <!-- <script type="module" src="./components/xy.js" async></script> -->
+    
+    <script type="module" src="./index.js"></script>
+</head>
+
+<body>
+    <h2>theme</h2>
+    <xy-button type="primary" class="theme-button" style="--themeColor:#1E90FF">#1E90FF</xy-button>
+    <xy-button type="primary" class="theme-button" style="--themeColor:#F44336">#F44336</xy-button>
+    <xy-button type="primary" class="theme-button" style="--themeColor:#9c27b0">#9c27b0</xy-button>
+    <xy-button type="primary" class="theme-button" style="--themeColor:#009688">#009688</xy-button>
+    <xy-button type="primary" class="theme-button" style="--themeColor:#3F51B5">#3F51B5</xy-button>
+    <h2>button</h2>
+    <p>normal</p>
+    <xy-button type="primary" id="btn">primary</xy-button>
+    <xy-button type="dashed">dashed</xy-button>
+    <xy-button type="flat">flat</xy-button>
+    <xy-button>default</xy-button>
+    <xy-button type="primary" loading>loading</xy-button>
+    <p>with icon</p>
+    <xy-button type="primary" icon="heart" shape="circle"></xy-button>
+    <xy-button type="dashed" icon="heart" shape="circle"></xy-button>
+    <xy-button type="flat" icon="heart" shape="circle"></xy-button>
+    <xy-button icon="heart" shape="circle"></xy-button>
+    <xy-button type="primary" icon="heart">like</xy-button>
+    <xy-button type="dashed" icon="search">search</xy-button>
+    <xy-button type="flat" icon="left">back</xy-button>
+    <xy-button icon="link">link</xy-button>
+    <p>block</p>
+    <xy-button type="primary" block><a>primary</a></xy-button>
+    <xy-button type="dashed" block>dashed</xy-button>
+    <xy-button type="flat" block>flat</xy-button>
+    <xy-button block>default</xy-button>
+    <p>disabled</p>
+    <xy-button disabled type="primary" onclick="XyMessage.info('This a info message')"><a>primary</a></xy-button>
+    <xy-button disabled type="dashed">dashed</xy-button>
+    <xy-button disabled type="flat">flat</xy-button>
+    <xy-button disabled >default</xy-button>
+    <h2>slider</h2>
+    <xy-slider onchange="console.log(event)"></xy-slider>
+    <xy-slider defaultvalue="100" min="0" max="300" step="5"></xy-slider>
+    <xy-slider defaultvalue="30" min="-100" max="100" step="1"></xy-slider>
+    <xy-slider defaultvalue="100" min="10" max="200" step="2" showtips></xy-slider>
+    <xy-slider defaultvalue="150" min="10" max="200" step="2" disabled></xy-slider>
+    <xy-slider style="height:200px" vertical showtips defaultvalue="150" min="10" max="200" step="2"></xy-slider>
+    <h2>loading</h2>
+    <xy-loading></xy-loading>
+    <xy-loading size="40" color="green"></xy-loading>
+    <xy-loading size="60" color="olivedrab"></xy-loading>
+    <xy-loading size="80" color="orange"></xy-loading>
+    <h2>switch</h2>
+    <xy-switch onchange="console.log(event)" checked></xy-switch>
+    <xy-switch></xy-switch>
+    <xy-switch disabled checked></xy-switch>
+    <h2>checkbox</h2>
+    <xy-checkbox name="lang" onchange="console.log(event)" checked>Html</xy-checkbox>
+    <xy-checkbox name="lang">Css</xy-checkbox>
+    <xy-checkbox name="lang" checked>Javascript</xy-checkbox>
+    <xy-checkbox name="lang">Python</xy-checkbox>
+    <xy-checkbox name="lang">Php</xy-checkbox>
+    <xy-checkbox name="lang">Dart</xy-checkbox>
+    <xy-checkbox name="lang">Swift</xy-checkbox>
+    <xy-checkbox name="lang" disabled>Other</xy-checkbox>
+    <h2>radio</h2>
+    <p>javascript</p>
+    <xy-radio onchange="console.log(event)" name="library" checked>React</xy-radio>
+    <xy-radio name="library">Vue</xy-radio>
+    <xy-radio name="library">Angular</xy-radio>
+    <xy-radio name="library">Other</xy-radio>
+    <xy-radio name="library" disabled>disabled</xy-radio>
+    <p>display</p>
+    <xy-radio onchange="console.log(event)" name="display" checked>block</xy-radio>
+    <xy-radio name="display" value="inline-block">inline-block</xy-radio>
+    <xy-radio name="display" value="inline">inline</xy-radio>
+    <xy-radio name="display" value="flex">flex</xy-radio>
+    <xy-radio name="display" value="grid">grid</xy-radio>
+    <xy-radio name="display" value="table">table</xy-radio>
+    <xy-radio name="display" value="other">other</xy-radio>
+    <h2>tips</h2>
+    <p>normal</p>
+    <xy-tips tips="some tips"><xy-button>auto</xy-button></xy-tips>
+    <xy-tips tips="some tips" dir="top"><xy-button>top</xy-button></xy-tips>
+    <xy-tips tips="some tips" dir="right"><xy-button>right</xy-button></xy-tips>
+    <xy-tips tips="some tips" dir="bottom"><xy-button>bottom</xy-button></xy-tips>
+    <xy-tips tips="some tips" dir="left"><xy-button>left</xy-button></xy-tips>
+    <xy-tips tips="some some some some some some some some some some some some some some tips"><xy-button>some tips</xy-button></xy-tips>
+    <xy-tips tips="some tips" dir="topleft"><xy-button>topleft</xy-button></xy-tips>
+    <xy-tips tips="some tips" dir="topright"><xy-button>topright</xy-button></xy-tips>
+    <xy-tips tips="some some some some some some some some some some some some some some tips" dir="righttop"><xy-button>righttop</xy-button></xy-tips>
+    <xy-tips tips="some some some some some some some some some some some some some some tips" dir="rightbottom"><xy-button>rightbottom</xy-button></xy-tips>
+    <xy-tips tips="some tips" dir="bottomleft"><xy-button>bottomleft</xy-button></xy-tips>
+    <xy-tips tips="some tips" dir="bottomright"><xy-button>bottomright</xy-button></xy-tips>
+    <xy-tips tips="some some some some some some some some some some some some some some tips" dir="lefttop"><xy-button>lefttop</xy-button></xy-tips>
+    <xy-tips tips="some some some some some some some some some some some some some some tips" dir="leftbottom"><xy-button>leftbottom</xy-button></xy-tips>
+    <p>status</p>
+    <xy-tips tips="some tips" type="success"><xy-button>success</xy-button></xy-tips>
+    <xy-tips tips="some tips" type="warning"><xy-button>warning</xy-button></xy-tips>
+    <xy-tips tips="some tips" type="error"><xy-button>error</xy-button></xy-tips>
+    <xy-tips tips="some tips" color="orangered"><xy-button>custom color</xy-button></xy-tips>
+    <h2>select</h2>
+    <xy-select onchange="console.log(event)">
+        <xy-option value="1">Option1</xy-option>
+        <xy-option value="2"><a>Option2</a></xy-option>
+        <xy-option value="3">Option3</xy-option>
+    </xy-select>
+    <xy-select defaultvalue="2" id="select" type="flat">
+        <xy-option value="1">Option1</xy-option>
+        <xy-option value="2">Option2</xy-option>
+        <xy-option value="3">Option3</xy-option>
+        <xy-option value="4">Option4444</xy-option>
+    </xy-select>
+    <xy-select defaultvalue="2" disabled>
+        <xy-option value="1">Option1</xy-option>
+        <xy-option value="2">Option2</xy-option>
+        <xy-option value="3">Option3</xy-option>
+        <xy-option value="4">Option4444</xy-option>
+    </xy-select>
+    <h2>icon</h2>
+    <p>name</p>
+    <xy-icon name="user" size="30" color="orangered"></xy-icon>
+    <xy-icon name="location" size="30" color="orangered"></xy-icon>
+    <xy-icon name="message" size="30" color="#1E90FF"></xy-icon>
+    <xy-icon name="heart" size="30" color="#F44336"></xy-icon>
+    <xy-icon name="send" size="50" color="#3F51B5"></xy-icon>
+    <xy-icon name="comment" size="50" color="#3F51B5"></xy-icon>
+    <xy-icon name="audio" size="50" color="#3F51B5"></xy-icon>
+    <p>path</p>
+    <xy-icon size="50" color="#3F51B5" path="M858.5 763.6c-18.9-44.8-46.1-85-80.6-119.5-34.5-34.5-74.7-61.6-119.5-80.6-0.4-0.2-0.8-0.3-1.2-0.5C719.5 518 760 444.7 760 362c0-137-111-248-248-248S264 225 264 362c0 82.7 40.5 156 102.8 201.1-0.4 0.2-0.8 0.3-1.2 0.5-44.8 18.9-85 46-119.5 80.6-34.5 34.5-61.6 74.7-80.6 119.5C146.9 807.5 137 854 136 901.8c-0.1 4.5 3.5 8.2 8 8.2h60c4.4 0 7.9-3.5 8-7.8 2-77.2 33-149.5 87.8-204.3 56.7-56.7 132-87.9 212.2-87.9s155.5 31.2 212.2 87.9C779 752.7 810 825 812 902.2c0.1 4.4 3.6 7.8 8 7.8h60c4.5 0 8.1-3.7 8-8.2-1-47.8-10.9-94.3-29.5-138.2zM512 534c-45.9 0-89.1-17.9-121.6-50.4S340 407.9 340 362c0-45.9 17.9-89.1 50.4-121.6S466.1 190 512 190s89.1 17.9 121.6 50.4S684 316.1 684 362c0 45.9-17.9 89.1-50.4 121.6S557.9 534 512 534z"></xy-icon>
+    <xy-icon size="50" color="#3F51B5" path="M923 283.6c-13.4-31.1-32.6-58.9-56.9-82.8-24.3-23.8-52.5-42.4-84-55.5-32.5-13.5-66.9-20.3-102.4-20.3-49.3 0-97.4 13.5-139.2 39-10 6.1-19.5 12.8-28.5 20.1-9-7.3-18.5-14-28.5-20.1-41.8-25.5-89.9-39-139.2-39-35.5 0-69.9 6.8-102.4 20.3-31.4 13-59.7 31.7-84 55.5-24.4 23.9-43.5 51.7-56.9 82.8-13.9 32.3-21 66.6-21 101.9 0 33.3 6.8 68 20.3 103.3 11.3 29.5 27.5 60.1 48.2 91 32.8 48.9 77.9 99.9 133.9 151.6 92.8 85.7 184.7 144.9 188.6 147.3l23.7 15.2c10.5 6.7 24 6.7 34.5 0l23.7-15.2c3.9-2.5 95.7-61.6 188.6-147.3 56-51.7 101.1-102.7 133.9-151.6 20.7-30.9 37-61.5 48.2-91 13.5-35.3 20.3-70 20.3-103.3 0.1-35.3-7-69.6-20.9-101.9zM512 814.8S156 586.7 156 385.5C156 283.6 240.3 201 344.3 201c73.1 0 136.5 40.8 167.7 100.4C543.2 241.8 606.6 201 679.7 201c104 0 188.3 82.6 188.3 184.5 0 201.2-356 429.3-356 429.3z"></xy-icon>
+    <xy-icon size="50" color="#3F51B5" view="48" path="M40 10H21.76L20 4H8C5.8 4 4 5.8 4 8v26c0 2.2 1.8 4 4 4h14l2 6h16c2.2 0 4-1.8 4-4V14c0-2.2-1.8-4-4-4zM14.33 29.17c-4.51 0-8.17-3.67-8.17-8.17s3.67-8.17 8.17-8.17c2.08 0 3.97.74 5.47 2.13l.13.13-2.44 2.36-.12-.11c-.57-.54-1.56-1.17-3.04-1.17-2.62 0-4.75 2.17-4.75 4.84s2.13 4.84 4.75 4.84c2.74 0 3.93-1.75 4.25-2.92h-4.42v-3.1h7.9l.03.14c.08.42.11.79.11 1.21-.01 4.71-3.24 7.99-7.87 7.99zm12.07-3.4c.67 1.2 1.48 2.35 2.38 3.4l-1.07 1.06-1.31-4.46zm1.54-1.54h-1.98l-.61-2.08h7.99s-.68 2.63-3.12 5.47c-1.07-1.23-1.81-2.43-2.28-3.39zM42 40c0 1.1-.9 2-2 2H26l4-4-1.63-5.53 1.84-1.84L35.58 36l1.46-1.46-5.41-5.37c1.8-2.07 3.2-4.5 3.83-7.01H38v-2.08h-7.27V18h-2.08v2.08h-3.92L22.35 12H40c1.1 0 2 .9 2 2v26z"></xy-icon>
+    <h2>tab</h2>
+    <p>label</p>
+    <xy-tab activekey="aaa" onchange="console.log(event)">
+        <xy-tab-content label="tab1">
+            A placeholder inside a web
+            component that users can fill with their own markup,
+            with the effect of composing different DOM trees
+            together.
+        </xy-tab-content>
+        <xy-tab-content label="tab2" disabled>
+            A placeholder inside a web
+            component that users can fill with their own markup,
+            with the effect of composing different DOM trees
+            together.
+        </xy-tab-content>
+        <xy-tab-content label="tab3" key="aaa">
+            A placeholder inside a web
+            component that users can fill with their own markup,
+            with the effect of composing different DOM trees
+            together.
+        </xy-tab-content>
+    </xy-tab>
+    <p>scrollable</p>
+    <xy-tab>
+        <xy-tab-content label="tab1">tab1</xy-tab-content>
+        <xy-tab-content label="tab2">tab2</xy-tab-content>
+        <xy-tab-content label="tab3">tab3</xy-tab-content>
+        <xy-tab-content label="tab4">tab4</xy-tab-content>
+        <xy-tab-content label="tab5">tab5</xy-tab-content>
+        <xy-tab-content label="tab6">tab6</xy-tab-content>
+        <xy-tab-content label="tab7">tab7</xy-tab-content>
+        <xy-tab-content label="tab8">tab8</xy-tab-content>
+        <xy-tab-content label="tab9">tab9</xy-tab-content>
+        <xy-tab-content label="tab10">tab10</xy-tab-content>
+    </xy-tab>
+    <p>label with icon</p>
+    <xy-tab>
+        <xy-tab-content label="home" icon="home">tab1</xy-tab-content>
+        <xy-tab-content label="message" icon="message">tab2</xy-tab-content>
+        <xy-tab-content label="user" icon="user">tab3</xy-tab-content>
+    </xy-tab>
+    <p>only icon</p>
+    <xy-tab>
+        <xy-tab-content icon="home">tab1</xy-tab-content>
+        <xy-tab-content icon="message">tab2</xy-tab-content>
+        <xy-tab-content icon="user">tab3</xy-tab-content>
+    </xy-tab>
+    <h2>layout</h2>
+    <xy-layout class="layout">
+        <xy-layout class="header">HEADER</xy-layout>
+        <xy-layout row expand>
+            <xy-layout class="side"></xy-layout>
+            <xy-layout expand center class="main">
+                <xy-layout center class="box">xy-layout</xy-layout>
+            </xy-layout>
+            <xy-layout class="side"></xy-layout>
+        </xy-layout>
+        <xy-layout class="footer">FOOTER</xy-layout>
+    </xy-layout>
+    <h2>grid</h2>
+    <xy-row gutter="10">
+        <xy-col span="8">11</xy-col>
+        <xy-col span="8">22</xy-col>
+        <xy-col span="16">22</xy-col>
+    </xy-row>
+    <h2>dialog</h2>
+    <xy-button type="primary" onclick="showDialog()">open dialog</xy-button>
+    <xy-button onclick="XyDialog.alert('alert')">alert</xy-button>
+    <xy-button id="confirm-btn">confirm</xy-button>
+    <xy-button onclick="XyDialog.info('info')">info</xy-button>
+    <xy-button onclick="XyDialog.success({title:'成功',content:'success',oktext:'send'})">success</xy-button>
+    <xy-button onclick="XyDialog.error('error')">error</xy-button>
+    <xy-button onclick="XyDialog.warning('warning')">warning</xy-button>
+    <xy-dialog id="dialog02">232</xy-dialog>
+    <xy-dialog id="dialog01" title="标题" oktext="确 定" canceltext="取消" >
+        <xy-tab>
+            <xy-tab-content label="tab1">tab1</xy-tab-content>
+            <xy-tab-content label="tab2">tab2</xy-tab-content>
+            <xy-tab-content label="tab3">tab3</xy-tab-content>
+            <xy-tab-content label="tab4">tab4</xy-tab-content>
+            <xy-tab-content label="tab5">tab5</xy-tab-content>
+            <xy-tab-content label="tab6">tab6</xy-tab-content>
+            <xy-tab-content label="tab7">tab7</xy-tab-content>
+            <xy-tab-content label="tab8">tab8</xy-tab-content>
+            <xy-tab-content label="tab9">tab9</xy-tab-content>
+            <xy-tab-content label="tab10">tab10</xy-tab-content>
+        </xy-tab>
+    </xy-dialog>
+    <h2>popover</h2>
+    <xy-popover type="confirm" onsubmit="console.log('ok')" title="确定删除吗?" content="删除后无法撤销"><xy-button>pop confirm</xy-button></xy-popover>
+    <xy-popover disabled type="confirm" onsubmit="console.log('ok')" title="确定删除吗?" content="删除后无法撤销"><xy-button>pop confirm disabled</xy-button></xy-popover>
+    <xy-popover>
+        <xy-button>pop confirm</xy-button>
+        <xy-popcon title="确定删除吗?" type="confirm" onsubmit="console.log('ok')">
+            <div>
+                <div>自定义删除后无法撤销</div>
+                <div>删除后无法撤销</div>
+                <div>删除后无法撤销</div>
+                <div>删除后无法撤销</div>
+                <div>删除后无法撤销</div>
+            </div>
+        </xy-popcon>
+    </xy-popover>
+    <xy-popover>
+        <xy-button>pop pane</xy-button>
+        <xy-popcon type="pane" title="提示">
+            <div>
+                <div>这是一段提示提示提示提示提示</div>
+                <div>这是一段提示</div>
+                <div>这是一段提示</div>
+                <div>这是一段提示</div>
+                <div>这是一段提示</div>
+            </div>
+        </xy-popcon>
+    </xy-popover>
+    <xy-popover>
+        <xy-button>pop flat</xy-button>
+        <xy-popcon>
+            <div>
+                <div>这是一段提示提示提示</div>
+                <div>这是一段提示</div>
+                <div>这是一段提示</div>
+                <div>这是一段提示</div>
+                <div>这是一段提示</div>
+            </div>
+        </xy-popcon>
+    </xy-popover>
+    <p>dir</p>
+    <xy-popover dir="top" type="confirm" onsubmit="console.log('ok')" title="确定删除吗?" content="删除后无法撤销"><xy-button>top</xy-button></xy-popover>
+    <xy-popover dir="right" type="confirm" onsubmit="console.log('ok')" title="确定删除吗?" content="删除后无法撤销"><xy-button>right</xy-button></xy-popover>
+    <xy-popover dir="bottom" type="confirm" onsubmit="console.log('ok')" title="确定删除吗?" content="删除后无法撤销"><xy-button>bottom</xy-button></xy-popover>
+    <xy-popover dir="left" type="confirm" onsubmit="console.log('ok')" title="确定删除吗?" content="删除后无法撤销"><xy-button>left</xy-button></xy-popover>
+    <xy-popover dir="lefttop" type="confirm" onsubmit="console.log('ok')" title="确定删除吗?" content="删除后无法撤销"><xy-button>lefttop</xy-button></xy-popover>
+    <xy-popover dir="leftbottom" type="confirm" onsubmit="console.log('ok')" title="确定删除吗?" content="删除后无法撤销"><xy-button>leftbottom</xy-button></xy-popover>
+    <xy-popover dir="topleft" type="confirm" onsubmit="console.log('ok')" title="确定删除吗?" content="删除后无法撤销"><xy-button>topleft</xy-button></xy-popover>
+    <xy-popover dir="topright" type="confirm" onsubmit="console.log('ok')" title="确定删除吗?" content="删除后无法撤销"><xy-button>topright</xy-button></xy-popover>
+    <xy-popover dir="righttop" type="confirm" onsubmit="console.log('ok')" title="确定删除吗?" content="删除后无法撤销"><xy-button>righttop</xy-button></xy-popover>
+    <xy-popover dir="rightbottom" type="confirm" onsubmit="console.log('ok')" title="确定删除吗?" content="删除后无法撤销"><xy-button>rightbottom</xy-button></xy-popover>
+    <xy-popover dir="bottomleft" type="confirm" onsubmit="console.log('ok')" title="确定删除吗?" content="删除后无法撤销"><xy-button>bottomleft</xy-button></xy-popover>
+    <xy-popover dir="bottomright" type="confirm" onsubmit="console.log('ok')" title="确定删除吗?" content="删除后无法撤销"><xy-button>bottomright</xy-button></xy-popover>
+    <h2>color-picker</h2>
+    <xy-color-picker defaultvalue="orangered" dir="righttop" onchange="console.log(event)"></xy-color-picker>
+    <xy-color-pane defaultvalue="orangered" dir="righttop" onchange="console.log(event)"></xy-color-pane>
+    <h2>date-picker</h2>
+    <p>type="date"</p>
+    <xy-date-picker></xy-date-picker>
+    <xy-date-picker  defaultvalue="2018-02-28"></xy-date-picker>
+    <p>type="month"</p>
+    <xy-date-picker type="month"></xy-date-picker>
+    <xy-date-picker type="month" defaultvalue="2019-02"></xy-date-picker>
+    <p>type="year"</p>
+    <xy-date-picker type="year"></xy-date-picker>
+    <xy-date-picker type="year" defaultvalue="2018"></xy-date-picker>
+    <p>min、max</p>
+    <xy-date-picker min="2016-10-20" max="2023-3-5"></xy-date-picker>
+    <xy-date-picker type="month" min="2010-10" max="2025-3"></xy-date-picker>
+    <xy-date-picker type="year" min="2010" max="2020"></xy-date-picker>
+    <p>range</p>
+    <xy-date-picker range min="2016-10-20" max="2023-3-5" defaultvalue="2019-10-01~2019-12-25"></xy-date-picker>
+    <xy-date-picker range type="month" min="2010-10" max="2025-3"></xy-date-picker>
+    <xy-date-picker range type="year"></xy-date-picker>
+    <p>pane</p>
+    <xy-date-pane style="width:400px"></xy-date-pane>
+    <h2>message</h2>
+    <xy-button onclick="XyMessage.info('This a info message')">info</xy-button>
+    <xy-button onclick="XyMessage.success('This a success message')">success</xy-button>
+    <xy-button onclick="XyMessage.error('This a error message')">error</xy-button>
+    <xy-button onclick="XyMessage.warning('This a warning message')">warning</xy-button>
+    <xy-button onclick="XyMessage.loading('This a loading message')">loading</xy-button>
+    <h2>input</h2>
+    <p>placeholder</p>
+    <xy-input placeholder="user" defaultvalue="xboxyan"></xy-input>
+    <xy-input placeholder="location"></xy-input>
+    <p>label</p>
+    <xy-input label="user" defaultvalue="xboxyan"></xy-input>
+    <xy-input label="location"></xy-input>
+    <p>icon</p>
+    <xy-input icon="user"></xy-input>
+    <xy-input icon="location" onchange="console.log(event)"></xy-input>
+    <p>block</p>
+    <xy-input label="info" block></xy-input>
+    <p>disabled</p>
+    <xy-input icon="lock" type="password" disabled></xy-input>
+    <p>type[password]</p>
+    <xy-input icon="lock" type="password"></xy-input>
+    <p>type[search]</p>
+    <xy-input type="search" onsubmit="console.log(event)"></xy-input>
+    <p>type[number]</p>
+    <xy-input icon="creditcard" type="number" ></xy-input>
+    <xy-input icon="creditcard" type="number" min="-10" max="10" step="0.3" ></xy-input>
+    <p>validity</p>
+    <xy-input icon="creditcard" required placeholder="required"></xy-input>
+    <xy-input icon="user" required placeholder="minlength,maxlength" minlength="6" maxlength="10"></xy-input>
+    <xy-input icon="mail" type="email" placeholder="email" minlength="5" errordir="right"></xy-input>
+    <xy-input icon="phone" pattern="^1(3|4|5|6|7|8|9)\d{9}$" placeholder="pattern[^1(3|4|5|6|7|8|9)\d{9}$]" errortips="请输入手机号"></xy-input>
+    <p>textarea</p>
+    <xy-textarea required  placeholder="required"  minlength="10"></xy-textarea>
+    <xy-textarea placeholder="rows" rows="5" ></xy-textarea>
+    <xy-textarea label="info" placeholder="info" ></xy-textarea>
+    <xy-textarea icon="location" placeholder="location" ></xy-textarea>
+    <p>datalist</p>
+    <xy-input list="city"></xy-input>
+    <xy-datalist id="city">
+        <xy-option value="wuhan">武汉</xy-option>
+        <xy-option value="beijin">北京</xy-option>
+        <xy-option value="shanghai">上海</xy-option>
+    </xy-datalist>
+    <xy-input list="email"></xy-input>
+    <xy-datalist id="email">
+        <xy-option value="${value}@live.com">@live.com</xy-option>
+        <xy-option value="${value}@qq.com">@qq.com</xy-option>
+        <xy-option value="${value}@yuewen.com">@yuewen.com</xy-option>
+    </xy-datalist>
+    <h2>img</h2>
+    <p>src</p>
+    <xy-img src="https://images.pexels.com/photos/1274640/pexels-photo-1274640.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"></xy-img>
+    <p>lazy</p>
+    <xy-img lazy src="https://images.pexels.com/photos/698808/pexels-photo-698808.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="image-keyboard"></xy-img>
+    <xy-img lazy src="https://images.pexels.com/photos/1440387/pexels-photo-1440387.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"></xy-img>
+    <xy-img lazy src="https://images.pexels.com/xxx.jpg" alt="image-keyboard"></xy-img>
+    <p>ratio</p>
+    <xy-img lazy ratio="16/9" src="https://images.pexels.com/photos/698808/pexels-photo-698808.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="image-keyboard"></xy-img>
+    <xy-img lazy ratio="3/2" src="https://images.pexels.com/photos/1440387/pexels-photo-1440387.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"></xy-img>
+    <xy-img lazy ratio="1/1" src="https://images.pexels.com/xxx.jpg" alt="image-keyboard"></xy-img>
+    <p>defaultsrc</p>
+    <xy-img lazy alt="image-keyboard" src="https://images.pexels.com/xxx.jpg" defaultsrc="https://images.pexels.com/photos/697662/pexels-photo-697662.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"></xy-img>
+    <xy-img lazy src="https://images.pexels.com/xxx.jpg" defaultsrc="https://images.pexels.com/xxxx.jpg"></xy-img>
+    <p>gallery</p>
+    <xy-img lazy gallery src="https://images.pexels.com/photos/841228/pexels-photo-841228.jpeg?auto=compress&cs=tinysrgb&dpr=1&h=650&w=940"></xy-img>
+    <xy-img lazy gallery src="https://images.pexels.com/photos/698808/pexels-photo-698808.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"></xy-img>
+    <xy-img lazy gallery src="https://images.pexels.com/photos/1440387/pexels-photo-1440387.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"></xy-img>
+    <xy-img lazy gallery alt="image-keyboard" src="https://images.pexels.com/xxx.jpg" defaultsrc="https://images.pexels.com/photos/697662/pexels-photo-697662.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"></xy-img>
+    <h2>rate</h2>
+    <xy-rate onchange="console.log(event)"></xy-rate>
+    <p>tips</p>
+    <xy-rate defaultvalue="1" tips="terrible,bad,normal,good,wonderful"></xy-rate>
+    <p>disabled</p>
+    <xy-rate disabled defaultvalue="2"></xy-rate>
+    <h2>form</h2>
+    <xy-form action="/login" method="post" labelwidth="100">
+        <xy-form-item legend="user">
+            <xy-input name="user" required placeholder="user"></xy-input>
+        </xy-form-item>
+        <xy-form-item legend="password">
+            <xy-input name="password" id="password" required type="password" placeholder="password" minlength="6"></xy-input>
+        </xy-form-item>
+        <xy-form-item legend="password align">
+            <xy-input name="password_confirm" id="password_confirm" required type="password" placeholder="password confirm"></xy-input>
+        </xy-form-item>
+        <xy-form-item legend="city">
+            <xy-select name="city">
+                <xy-option value="wuhan">wuhan</xy-option>
+                <xy-option value="beijin">beijin</xy-option>
+                <xy-option value="shanghai">shanghai</xy-option>
+            </xy-select>
+        </xy-form-item>
+        <xy-form-item legend="books">
+            <xy-checkbox-group name="books" required min="2" max="3" defaultvalue="Angular">
+                <xy-checkbox>React</xy-checkbox>
+                <xy-checkbox>Vue</xy-checkbox>
+                <xy-checkbox>Angular</xy-checkbox>
+                <xy-checkbox>Flutter</xy-checkbox>
+                <xy-checkbox>Swift</xy-checkbox>
+            </xy-checkbox-group>
+        </xy-form-item>
+        <xy-form-item legend="lang">
+            <xy-radio-group name="lan" required>
+                <xy-radio>Html</xy-radio>
+                <xy-radio>Css</xy-radio>
+                <xy-radio>Javascript</xy-radio>
+                <xy-radio>Php</xy-radio>
+                <xy-radio>Dart</xy-radio>
+            </xy-radio-group>
+        </xy-form-item>
+        <xy-form-item>
+            <xy-checkbox name="read" checked required value="read">I have read</xy-checkbox>
+        </xy-form-item>
+        <xy-form-item>
+            <xy-button type="primary" htmltype="submit">submit</xy-button>
+            <xy-button htmltype="reset">reset</xy-button>
+        </xy-form-item>
+    </xy-form>
+    <h2>view</h2>
+    <p>coord</p>
+    <xy-view class="parent" coord>
+        <xy-view class="child" coord="x2,y2"></xy-view>
+    </xy-view>
+    <p>draggable & allowdrop</p>
+    <xy-view draggable></xy-view>
+    <xy-view allowdrop class="dropbox dropbox-parent" ondrop="console.log(this)">
+        <xy-view allowdrop class="dropbox" ondrop="console.log(this)"></xy-view>
+        <div class="dropbox" ondrop="console.log(this)"></div>
+    </xy-view>
+    <button id="fakebutton">focus</button>
+    <p>resizable</p>
+    <xy-view resizable draggable>edit</xy-view>
+    <h2>table</h2>
+    <xy-table thead="Name,Age,Address">
+        <xy-tr>
+            <xy-td>John Brown</xy-td>
+            <xy-td>32</xy-td>
+            <xy-td>New York No. 1 Lake Park</xy-td>
+        </xy-tr>
+        <xy-tr>
+            <xy-td>Jim Green</xy-td>
+            <xy-td>42</xy-td>
+            <xy-td>London No. 1 Lake Park</xy-td>
+        </xy-tr>
+        <xy-tr>
+            <xy-td>Jim Green</xy-td>
+            <xy-td>42</xy-td>
+            <xy-td>London No. 1 Lake Park</xy-td>
+        </xy-tr>
+        <xy-tr>
+            <xy-td>Jim Green</xy-td>
+            <xy-td>42</xy-td>
+            <xy-td>London No. 1 Lake Park</xy-td>
+        </xy-tr>
+        <xy-tr>
+            <xy-td>Jim Green</xy-td>
+            <xy-td>42</xy-td>
+            <xy-td>London No. 1 Lake Park</xy-td>
+        </xy-tr>
+    </xy-table>
+    <h2>text</h2>
+    <xy-text>xy-ui is a front end cross-framework ui library based on web-components</xy-text>
+    <br>
+    <xy-text>xy-ui</xy-text>
+    <br>
+    <xy-text type="warning">xy-ui</xy-text>
+    <br>
+    <xy-text type="error">xy-ui</xy-text>
+    <br>
+    <xy-text type="success">xy-ui</xy-text>
+    <br>
+    <xy-text mark>xy-ui</xy-text>
+    <br>
+    <xy-text code>xy-ui</xy-text>
+    <br>
+    <xy-text rows="3">xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.xy-ui is a front end cross-framework ui library based on web-components.</xy-text>
+    <h2>pagination</h2>
+    <xy-pagination onchange="console.log(this.current)" pagesize="3" total="50" defaultcurrent="9"></xy-pagination>
+    <xy-pagination simple onchange="console.log(this.current)" pagesize="3" total="50" defaultcurrent="9"></xy-pagination>
+    
+    <script>
+        document.getElementById('btn').addEventListener('click',function(ev){
+            console.log(ev)
+        })
+        
+        document.getElementById('select').onchange = function(ev){
+            console.log(ev)
+        }
+        document.getElementById('dialog01').addEventListener('submit',function(){
+            
+        })
+        document.getElementById('dialog01').onsubmit = function(){
+            this.loading = true;
+            new Promise((resolve, reject) => {
+                setTimeout(resolve, 1000);
+            }).then(()=>{
+                this.open = false
+            })
+        }
+        document.getElementById('dialog01').oncancel = function(){
+            console.log('2')
+        }
+        document.getElementById('confirm-btn').onclick = function(ev){
+            /*
+            XyDialog.confirm('assdd',function(){
+                console.log('ok')
+            },function(){
+                console.log('cancel')
+            })
+            */
+            XyDialog.confirm({
+                header:'确定要删除吗',
+                type:'error',
+                content:'一旦删除无法还原',
+                oktext:'删除',
+
+            })
+        }
+        document.querySelectorAll('.theme-button').forEach((el)=>{
+            el.addEventListener('click',function(){
+                const themeColor = window.getComputedStyle(el).getPropertyValue('--themeColor');
+                document.body.style.setProperty('--themeColor',themeColor);
+            })
+        })
+
+        function showDialog(){
+            document.getElementById('dialog01').open = true;
+        }
+
+        // document.getElementById('password_confirm').setcustomValidity(function(el){
+        //     return {
+        //         method:(el)=>{
+        //             console.log(this)
+        //             return this.value == document.getElementById('password').value;
+        //         },
+        //         tips:'前后密码不一致'
+        //     }
+        // })
+        document.getElementById('password_confirm').customValidity = {
+            method:(el)=>{
+                return el.value == document.getElementById('password').value;
+            },
+            tips:'前后密码不一致'
+        }
+
+        
+    </script>
+</body>
+
+
+</html>

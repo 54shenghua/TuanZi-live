@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理面板</title>
+    <script src="./ref/axios.min.js"></script>
+    <script type="module" src="./node_modules/xy-ui/index.js"></script>
+    <style>
+        .form{
+            width: 60%;
+        }
+    </style>
+</head>
+<body>
+    <xy-select onchange="GetPreSet(this.value)">
+        <xy-option value="1">预设一</xy-option>
+        <xy-option value="2">预设二</xy-option>
+        <xy-option value="3">预设三</xy-option>
+        <xy-option value="4">预设四</xy-option>
+        <xy-option value="5">预设五</xy-option>
+        <xy-option value="6">预设六</xy-option>
+    </xy-select>
+    <div class="form">
+        <xy-input id="question" label="问题" block></xy-input>
+        <xy-input id="a" label="选项A"></xy-input>
+        <xy-input id="b" label="选项B"></xy-input>
+        <xy-input id="c" label="选项C"></xy-input>
+        <xy-input id="d" label="选项D"></xy-input>
+        <xy-input id="time" label="时间"></xy-input>
+    </div>
+
+    <xy-button onclick="Sent()">开始</xy-button>
+    <xy-button onclick="End()">结束</xy-button>
+    
+    <script>
+        const question=document.querySelector('#question')
+        const a=document.querySelector('#a')
+        const b=document.querySelector('#b')
+        const c=document.querySelector('#c')
+        const d=document.querySelector('#d')
+        const time=document.querySelector('#time')
+        function Sent(){
+            //axios.get('http://127.0.0.1:8000/getPreset?index=1').then(res=>{alert(res.data.data)})
+        axios.post("http://127.0.0.1:8000/inPutOptions",{
+            options: [
+                {option:'A',label:a.value},
+                {option:'B',label:b.value},
+                {option:'C',label:c.value},
+                {option:'D',label:d.value}
+            ],
+            problemValue: question.value,
+            time: time.value
+        }).then(res=>{
+            console.log("发送input成功")
+            axios.post('http://127.0.0.1:8000/start').then(res=>{
+                console.log("开启成功")
+            })
+        })
+        }
+        function GetPreSet(num){
+            axios.get('http://127.0.0.1:8000/getPreset',{params:{
+                index:num
+            }}).then(res=>{
+                question.value=res.data.data['question']
+                a.value=res.data.data['A']
+                b.value=res.data.data['B']
+                c.value=res.data.data['C']
+                d.value=res.data.data['D']
+                time.value=res.data.data['time']
+            })}
+        function End(){
+            axios.post('http://127.0.0.1:8000/stop').then(res=>{
+                axios.post('http://127.0.0.1:8000/reset').then(res=>{
+                    console.log('结束了')
+                })
+            })
+        }
+    </script>
+</body>
+</html>

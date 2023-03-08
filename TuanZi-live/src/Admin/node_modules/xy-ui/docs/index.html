@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>xy-ui</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Description">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
+  <link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+  <style>
+    :root {
+      --themeColor: #42b983;
+      /*--themeBackground:linear-gradient(to right, #42b983 0%,#06b2a1 100%)*/
+    }
+
+    xy-button,
+    xy-checkbox,
+    xy-radio,
+    xy-input,
+    xy-select,
+    xy-switch,
+    xy-color-picker,
+    xy-date-picker,
+    xy-textarea {
+      vertical-align: middle;
+      margin: 0 10px 10px 0;
+    }
+    xy-slider{
+      margin: 10px 0;
+    }
+    xy-pagination{
+      margin-bottom: 10px;
+    }
+    xy-form-item *{
+      margin-bottom: 0;
+    }
+    xy-img{ 
+      width: 200px; 
+      height: 150px; 
+      margin: 0 10px 10px 0;
+    }
+
+    xy-input:not([block]),
+    xy-textarea:not([block]) {
+      width: 300px;
+    }
+
+    [block]{
+      margin-right:0;
+    }
+
+    xy-tips>*,xy-popover>*{
+      margin: 0;
+    }
+
+    xy-tips, xy-popover{
+      margin: 0 10px 10px 0;
+      vertical-align: middle;
+    }
+
+    .layout {
+      height: 300px;
+    }
+
+    .side {
+      width: 200px;
+    }
+
+    .main {
+      margin: 0 10px;
+    }
+
+    .box {
+      width: 100px;
+      height: 100px;
+      color: #fff;
+    }
+    .box-o{
+      background: rgba(33, 243, 103, 0.5);
+    }
+    xy-col{
+      padding: 20px;
+      color: #fff;
+      background: #42b983;
+    }
+    xy-col:nth-child(odd){
+      background: #3ba2f4;
+    }
+
+    .header,
+    .footer {
+      padding: 5px 10px;
+      color: #fff;
+    }
+    .gt-container .gt-header-textarea{
+      border-radius: 3px;
+      font-family: auto;
+    }
+    .gt-container .gt-btn-preview,.gt-container .gt-btn-preview:hover{
+      color: var(--themeColor);
+      border-color: var(--themeColor);
+    }
+    .gt-container .gt-btn-login,.gt-container .gt-btn-public,.gt-container .gt-btn-public:hover{
+      background:var(--themeColor);
+      border-color: var(--themeColor);
+    }
+    .gt-container .gt-header-controls-tip,.gt-container .gt-header-controls-tip:hover{
+      color: var(--themeColor);
+    }
+    .gt-container .gt-svg svg{
+      fill:var(--themeColor);
+    }
+    .gt-container .gt-btn{
+      border-radius: 3px;
+    }
+    .gt-container .gt-comment-username,.gt-container a,.gt-container a:hover{
+      color: var(--themeColor);
+    }
+    xy-layout {
+      background: rgba(33, 150, 243, 0.5);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">Please wait...</div>
+  <script>
+    if (typeof navigator.serviceWorker !== 'undefined') {
+      //navigator.serviceWorker.register('sw.js')
+    }
+  </script>
+  <script src="//unpkg.com/docsify-edit-on-github/index.js"></script>
+  <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+  <script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script>
+    window.$docsify = {
+      name: 'xy-ui',
+      repo: 'https://github.com/XboxYan/xy-ui',
+      coverpage: 'coverpage.md',
+      loadSidebar: 'sidebar.md',
+      subMaxLevel: 2,
+      auto2top: true,
+      plugins: [
+        EditOnGithubPlugin.create('https://github.com/XboxYan/xy-ui/tree/master/docs/'),
+        function(hook, vm) {
+          hook.doneEach(function(){
+            document.getElementById('gitalk-container').innerHTML = "";
+            NewGitalk().render('gitalk-container');
+            if(vm.route.file=='xy-input.md'||vm.route.file=='xy-form.md'){
+              document.getElementById('pwdAgain').customValidity = {
+                  method:(el)=>{
+                      return el.value == document.getElementById('pwd').value;
+                  },
+                  tips:'前后密码不一致'
+              }
+            }
+          });
+        }	
+      ]
+    }
+    const gitalk = NewGitalk();
+    function NewGitalk(){
+      return new Gitalk({
+        clientID: 'aff209ab4dddd16afee0',
+        clientSecret: '6be2c48694e28738bd0777eff1d0a0febb436704',
+        repo: 'xy-ui',
+        owner: 'XboxYan',
+        admin: ['XboxYan'],
+        // facebook-like distraction free mode
+        title: location.hash==''?'/README':location.hash.match(/#(.*?)([?]|$)/)[1],
+        id: location.hash==''?'/README':location.hash.match(/#(.*?)([?]|$)/)[1],
+        distractionFreeMode: false
+      });
+    }
+  </script>
+  <script src="//unpkg.com/docsify/lib/plugins/search.min.js"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/gitalk.min.js"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/emoji.min.js"></script>
+  <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  <script type="text/javascript">
+    function changeColor(themeColor){
+        document.body.style.setProperty('--themeColor',themeColor);
+        document.body.style.setProperty('--theme-color',themeColor);
+    }
+    function checkform(){
+        var form = document.getElementById('form-check');
+        if(form.checkValidity()){
+            //全部验证通过
+            XyDialog.success({
+                title:"全部验证通过",
+                content:JSON.stringify(form.formdata.json,null,4)
+            })
+            console.log(form.formdata)
+        }
+    }
+    function formSubmit(){
+        var form = document.getElementById('form-submit');
+        console.log(form.validity)
+        if(form.validity){
+            //全部验证通过
+            XyDialog.success({
+                title:"全部验证通过",
+                content:'<div style="white-space:pre">'+JSON.stringify(form.formdata.json,null,4)+'</div>'
+            })
+            console.log(form.formdata)
+        }
+    }
+  </script>
+  <script type="module">
+    import '../index.js';
+  </script>
+</body>
+
+</html>
