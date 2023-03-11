@@ -121,6 +121,9 @@
                     this.time = res.data.time
                     this.setTime()
                 })
+                axios.post('http://127.0.0.1:8000/start').then(res=>{
+                console.log("开启成功")
+                })
             }
         })
 
