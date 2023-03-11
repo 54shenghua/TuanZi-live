@@ -1,3 +1,0 @@
-aiowebsocket
-fastapi
-uvicorn

@@ -79,7 +79,7 @@
 </head>
 
 <body>
-    <div id="time">剩余时间为：{{time}}</div>
+    <div id="time">投票剩余时间为：{{time}}</div>
     <div id="app">
         <div class="progress-bar" v-for="(option, index) in options" :key="index">
             <div class="progress-bar-background">
@@ -102,7 +102,7 @@
                     var that = this
                     function createTips() {
                         var ele = document.getElementById("time");
-                        ele.innerHTML = "时间到!"
+                        ele.innerHTML = "投票截止!"
                     }
 
                     function changeTime() {
