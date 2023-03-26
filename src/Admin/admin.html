@@ -18,6 +18,9 @@
         <xy-option value="1">预设一</xy-option>
         <xy-option value="2">预设二</xy-option>
         <xy-option value="3">预设三</xy-option>
+        <xy-option value="4">预设四</xy-option>
+        <xy-option value="5">预设五</xy-option>
+        <xy-option value="6">预设六</xy-option>
     </xy-select>
     <div class="form">
         <xy-input id="question" label="问题" block></xy-input>
@@ -51,9 +54,9 @@
             time: time.value
         }).then(res=>{
             console.log("发送input成功")
-            axios.post('http://127.0.0.1:8000/start').then(res=>{
-                console.log("开启成功")
-            })
+            // axios.post('http://127.0.0.1:8000/start').then(res=>{
+            //     console.log("开启成功")
+            // })
         })
         }
         function GetPreSet(num){

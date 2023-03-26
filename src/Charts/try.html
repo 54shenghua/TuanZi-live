@@ -79,7 +79,7 @@
 </head>
 
 <body>
-    <div id="time">剩余时间为：{{time}}</div>
+    <div id="time">投票剩余时间为：{{time}}</div>
     <div id="app">
         <div class="progress-bar" v-for="(option, index) in options" :key="index">
             <div class="progress-bar-background">
@@ -102,7 +102,7 @@
                     var that = this
                     function createTips() {
                         var ele = document.getElementById("time");
-                        ele.innerHTML = "时间到!"
+                        ele.innerHTML = "投票截止!"
                     }
 
                     function changeTime() {
@@ -120,6 +120,9 @@
                 axios.get('http://127.0.0.1:8000/getOptions').then((res) => {
                     this.time = res.data.time
                     this.setTime()
+                })
+                axios.post('http://127.0.0.1:8000/start').then(res=>{
+                console.log("开启成功")
                 })
             }
         })

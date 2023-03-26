@@ -27,7 +27,7 @@ class PresetIndex(BaseModel):
        
 
 #定义全局所要用的变量
-danmu=Spider(7734200)
+danmu=Spider(24471267)
 ifStop=True
 data = list()
 options = dict()
